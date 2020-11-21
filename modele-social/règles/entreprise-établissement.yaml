@@ -77,25 +77,89 @@ entreprise . rémunération du dirigeant:
   par défaut: 100%
 
 entreprise . bénéfice:
+  titre: Bénéfice de l'exercice
+  résumé: Imposable à l'impôt sur les sociétés
   formule: chiffre d'affaires - charges dont rémunération dirigeant
 
 entreprise . résultat net:
   résumé: Ce qu'il reste après impôt sur les sociétés
   formule: bénéfice - impôt sur les sociétés
 
+entreprise . exercice:
+
+entreprise . exercice . début:
+  type: date
+  formule: période . début d'année
+
+entreprise . exercice . fin:
+  type: date
+  formule: période . fin d'année
+
+entreprise . exercice . durée:
+  titre: durée de l'exercice
+  formule:
+    durée:
+      depuis: début
+      jusqu'à: fin
+
 entreprise . impôt sur les sociétés:
   unité: €/an
   formule:
     barème:
       assiette: bénéfice
-      tranches:
-        - taux: 15%
-          plafond: 38120 €/an
-        - taux: 28%
-          plafond: 500000 €/an
-        - taux: 33.3%
+      variations:
+        - si: exercice . début >= 01/01/2022
+          alors:
+            tranches:
+              - taux: 15%
+                plafond: 38120 €/an * prorata is
+              - taux: 25%
+        - si: exercice . début >= 01/01/2021
+          alors:
+            tranches:
+              - taux: 15%
+                plafond: 38120 €/an * prorata is
+              - taux: 26.5%
+        - si: exercice . début >= 01/01/2020
+          alors:
+            tranches:
+              - taux: 15%
+                plafond: 38120 €/an * prorata is
+              - taux: 28%
+        - si: exercice . début >= 01/01/2019
+          alors:
+            tranches:
+              - taux: 15%
+                plafond: 38120 €/an * prorata is
+              - taux: 28%
+                plafond: 500000 €/an * prorata is
+              - taux: 31%
+        - si: exercice . début >= 01/01/2018
+          alors:
+            tranches:
+              - taux: 15%
+                plafond: 38120 €/an * prorata is
+              - taux: 28%
+                plafond: 500000 €/an * prorata is
+              - taux: 33.3333%
+    arrondi: oui
   références:
-    fiche service-public.fr: https://www.service-public.fr/professionnels-entreprises/vosdroits/F23575
+    Fiche impots.gouv.fr: https://www.impots.gouv.fr/portail/international-professionnel/impot-sur-les-societes
+    Fiche service-public.fr: https://www.service-public.fr/professionnels-entreprises/vosdroits/F23575
+
+entreprise . impôt sur les sociétés . prorata is:
+  formule: exercice . durée / 1 an
+
+entreprise . impôt sur les sociétés . contribution sociale:
+  formule:
+    produit:
+      taux: 3.3%
+      assiette: 
+        allègement:
+          assiette: impôt sur les sociétés
+          abattement: 763000 * prorata is
+  références:
+    Bofip: https://bofip.impots.gouv.fr/bofip/3492-PGP.html/identifiant%3DBOI-IS-AUT-10-20-20130318
 
 entreprise . charges dont rémunération dirigeant:
   formule: charges + dirigeant . rémunération totale

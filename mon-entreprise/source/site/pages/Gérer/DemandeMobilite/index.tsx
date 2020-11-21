@@ -185,6 +185,7 @@ function FormulairePublicodes() {
 							<RuleInput
 								id={field.dottedName}
 								dottedName={field.dottedName}
+								value={situation[field.dottedName]}
 								onChange={(value) => onChange(field.dottedName, value)}
 							/>
 						</>

@@ -30,6 +30,7 @@ export type RuleInputProps<Name extends string = DottedName> = {
 	useSwitch?: boolean
 	isTarget?: boolean
 	autoFocus?: boolean
+	required?: boolean
 	id?: string
 	className?: string
 	onSubmit?: (source: string) => void
@@ -63,6 +64,7 @@ export default function RuleInput<Name extends string = DottedName>({
 	id,
 	isTarget = false,
 	autoFocus = false,
+	required = true,
 	className,
 	onSubmit = () => null,
 }: RuleInputProps<Name>) {
@@ -79,11 +81,11 @@ export default function RuleInput<Name extends string = DottedName>({
 		onChange,
 		autoFocus,
 		className,
+		required,
 		title: rule.title,
 		id: id ?? dottedName,
 		question: rule.question,
 		suggestions: rule.suggestions,
-		required: true,
 	}
 	if (getVariant(engine.getParsedRules()[dottedName])) {
 		return (

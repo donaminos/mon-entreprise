@@ -1,5 +1,5 @@
 import { setSimulationConfig, updateSituation } from 'Actions/actions'
-import RuleInput from 'Components/conversation/RuleInput'
+import RuleInput, { RuleInputProps } from 'Components/conversation/RuleInput'
 import { DistributionBranch } from 'Components/Distribution'
 import Value, { Condition } from 'Components/EngineValue'
 import SimulateurWarning from 'Components/SimulateurWarning'
@@ -39,14 +39,14 @@ export default function ArtisteAuteur() {
 				<div id="targetSelection">
 					<ul className="targets">
 						<InitialRenderContext.Provider value={initialRender}>
-							<SimpleField dottedName="artiste-auteur . revenus . traitements et salaires" />
-							<SimpleField dottedName="artiste-auteur . revenus . BNC . recettes" />
-							<SimpleField dottedName="artiste-auteur . revenus . BNC . micro-bnc" />
+							<TargetLine dottedName="artiste-auteur . revenus . traitements et salaires" />
+							<TargetLine dottedName="artiste-auteur . revenus . BNC . recettes" />
+							<TargetLine dottedName="artiste-auteur . revenus . BNC . micro-bnc" />
 							<Warning dottedName="artiste-auteur . revenus . BNC . contrôle micro-bnc" />
 							<Condition expression="artiste-auteur . revenus . BNC . micro-bnc = non">
-								<SimpleField dottedName="artiste-auteur . revenus . BNC . frais réels" />
+								<TargetLine dottedName="artiste-auteur . revenus . BNC . frais réels" />
 							</Condition>
-							<SimpleField dottedName="artiste-auteur . cotisations . option surcotisation" />
+							<TargetLine dottedName="artiste-auteur . cotisations . option surcotisation" />
 						</InitialRenderContext.Provider>
 					</ul>
 				</div>
@@ -58,13 +58,14 @@ export default function ArtisteAuteur() {
 
 type SimpleFieldProps = {
 	dottedName: DottedName
-}
+} & Omit<RuleInputProps, 'onChange'>
 
-function SimpleField({ dottedName }: SimpleFieldProps) {
+export function TargetLine({ dottedName, ...otherProps }: SimpleFieldProps) {
 	const dispatch = useDispatch()
 	const engine = useEngine()
 	const situation = useSelector(situationSelector)
 	const rule = evaluateRule(engine, dottedName)
+	const value = useSelector(situationSelector)[dottedName] ?? rule['par défaut']
 	const initialRender = useContext(InitialRenderContext)
 	if (
 		rule.isNotApplicable === true ||
@@ -87,9 +88,11 @@ function SimpleField({ dottedName }: SimpleFieldProps) {
 					</div>
 					<div className="targetInputOrValue">
 						<RuleInput
+							{...otherProps}
 							className="targetInput"
 							isTarget
 							dottedName={dottedName}
+							value={value}
 							onChange={(x) => dispatch(updateSituation(dottedName, x))}
 							useSwitch
 						/>

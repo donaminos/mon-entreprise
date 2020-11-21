@@ -386,7 +386,11 @@ function SimpleField({ dottedName, question, summary }: SimpleFieldProps) {
 						</p>
 						<p className="ui__ notice">{summary ?? evaluatedRule.résumé}</p>
 					</div>
-					<RuleInput dottedName={dottedName} onChange={dispatchValue} />
+					<RuleInput
+						dottedName={dottedName}
+						onChange={update}
+						value={currentValue}
+					/>
 				</Question>
 			</Animate.fromTop>
 		</div>

@@ -12,6 +12,7 @@ type DateInputProps = {
 	id: InputCommonProps['id']
 	onSubmit: RuleInputProps['onSubmit']
 	value: InputCommonProps['value']
+	required: RuleInputProps['required']
 	suggestions: EvaluatedRule['suggestions']
 }
 
@@ -20,6 +21,7 @@ export default function DateInput({
 	onChange,
 	id,
 	onSubmit,
+	required,
 	value,
 }: DateInputProps) {
 	const dateValue = useMemo(() => {
@@ -64,6 +66,7 @@ export default function DateInput({
 					id={id}
 					type="date"
 					value={dateValue}
+					required={required}
 					onChange={handleDateChange}
 				/>
 			</div>

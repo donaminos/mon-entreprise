@@ -32,6 +32,7 @@ import IndépendantSimulation, {
 	IndépendantPLSimulation,
 } from './IndépendantSimulation'
 import SalariéSimulation from './SalariéSimulation'
+import ISSimulation from './ISSimulation'
 import SchemeComparaisonPage from './SchemeComparaison'
 import ÉconomieCollaborative from './ÉconomieCollaborative'
 
@@ -54,6 +55,7 @@ const simulateurs = [
 	'avocat',
 	'expert-comptable',
 	'pamc',
+	'is',
 ] as const
 
 export type SimulatorData = Record<
@@ -741,6 +743,24 @@ export function getSimulatorsData({
 			},
 			shortName: t('pages.simulateurs.pamc.shortname', 'PAMC'),
 			component: PAMCHome,
+		},
+		is: {
+			icône: '🗓',
+			path: sitePaths.simulateurs.is,
+			iframe: 'impot-societe',
+			meta: {
+				title: t('pages.simulateurs.is.meta.title', 'Impôt sur les sociétés'),
+				description: t(
+					'pages.simulateurs.pamc.meta.description',
+					'Calculez votre impôt sur les sociétés'
+				)
+			},
+			shortName: t('pages.simulateurs.is.meta.title', 'Impôt sur les sociétés'),
+			title: t(
+				'pages.simulateurs.is.meta.title',
+				"Simulateur d'impôt sur les sociétés"
+			),
+			component: ISSimulation
 		},
 	}
 }
