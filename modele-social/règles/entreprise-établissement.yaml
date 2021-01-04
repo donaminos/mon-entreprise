@@ -302,9 +302,8 @@ entreprise . non assujettie à TVA:
 
 entreprise . taxe sur les salaires . montant avant décote:
   formule:
-    allègement:
-      assiette: contrat salarié . taxe sur les salaires . barème / 1 employé * effectif
-      abattement: abattement associations
+    valeur: contrat salarié . taxe sur les salaires . barème / 1 employé * effectif
+    abattement: abattement associations
 
 entreprise . taxe sur les salaires . abattement associations:
   applicable si: entreprise . association non lucrative
